@@ -1,0 +1,8 @@
+.google-map {
+    width: 800px;
+    height: 500px;
+    background-color: #DBDBDB;
+    background-image: url('/Umbraco/Api/Resource/GetEmbededGif?filename=map-load.gif');
+    background-position: center center;
+    background-repeat: no-repeat;
+}
