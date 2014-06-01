@@ -50,7 +50,7 @@ namespace Umbraco.GoogleMaps.DataType
 
         public override Guid Id
         {
-            get { return new Guid("BD6402ED-54A5-40CF-8DD0-C35EFE4C510C"); }
+            get { return new Guid(Constants.DATATYPE_GUID); }
         }
 
         public override umbraco.interfaces.IDataPrevalue PrevalueEditor

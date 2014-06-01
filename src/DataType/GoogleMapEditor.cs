@@ -10,14 +10,20 @@ using System.Reflection;
 using System.IO;
 using Umbraco.GoogleMaps.Extensions;
 using Umbraco.GoogleMaps.Models;
+using Umbraco.Core.Models;
+using System.Web;
+using umbraco.DataLayer;
+using umbraco.BusinessLogic;
 
 
 namespace Umbraco.GoogleMaps.DataType
 {
+    [ValidationProperty("IsValid")]
     public class GoogleMapEditor : Panel, umbraco.interfaces.IDataEditor
     {
 
         private umbraco.interfaces.IData _data;
+        private CustomValidator _validator;
 
         private HiddenField ctlValue;
         private MapState value;
@@ -39,7 +45,7 @@ namespace Umbraco.GoogleMaps.DataType
                     DrawingTools = Constants.DEFAULT_DRAWINGTOOLS,
                     SingleLocation = false,
                     SearchBox = true,
-                    RichtextEditor=false,
+                    RichtextEditor = false,
                     Center = new Center
                     {
                         Latitude = Constants.DEFAULT_LAT,
@@ -70,7 +76,7 @@ namespace Umbraco.GoogleMaps.DataType
         {
             base.OnInit(e);
             Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "MapperJavaScript", Common.GetResourceText("jquery.googlemaps.js"), true);
-            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "MappInitJavaScript", Common.GetResourceText("map.init.js"),true);
+            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "MappInitJavaScript", Common.GetResourceText("map.init.js"), true);
             Page.RegisterStyleSheetBlock("ColorPicker", Common.GetResourceText("jquery.simple-color-picker.css"));
             Page.RegisterStyleSheetBlock("MapContainer", Common.GetResourceText("mapstyle.css"));
 
@@ -84,6 +90,56 @@ namespace Umbraco.GoogleMaps.DataType
             mainDiv.Controls.Add(ctlValue);
 
             this.Controls.Add(mainDiv);
+
+            _validator = new CustomValidator();
+            
+            _validator.ServerValidate += validator_ServerValidate;
+            this.Controls.Add(_validator);
+        }
+
+        void validator_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            //int propId = this._data.PropertyId;
+            var contentSvc = Umbraco.Core.ApplicationContext.Current.Services.ContentService;
+            var dataTypeSvc = Umbraco.Core.ApplicationContext.Current.Services.DataTypeService;
+            int pageId = 0;
+            if (HttpContext.Current.Request["id"] != null)
+            {
+                if (contentSvc != null && int.TryParse(HttpContext.Current.Request["id"].ToString(), out pageId))
+                {
+                    IContent currentPage = contentSvc.GetById(pageId);
+                    if (currentPage != null)
+                    {
+
+                        int propertyId = int.Parse(this._data.GetType().GetProperty("PropertyId").GetValue(this._data).ToString());
+                        Property property = currentPage.Properties.Where(p => p.Id == propertyId).FirstOrDefault();
+                        if (property != null)
+                        {
+
+                            _validator.ErrorMessage = string.Format("Propety \"{0}\" is mandatory",property.Alias);
+
+                            int propertyTypeId = SqlHelper.ExecuteScalar<int>("select propertytypeid from cmsPropertyData where id = @id", SqlHelper.CreateParameter("@id", propertyId));
+
+                            IDataTypeDefinition def = dataTypeSvc.GetAllDataTypeDefinitions().ToArray().Where(p => p.ControlId == new Guid(Constants.DATATYPE_GUID)).FirstOrDefault();
+                            PropertyType propertyType = new PropertyType(def);
+
+                            if (propertyType != null && propertyType.Id > 0 && propertyType.Mandatory)
+                            {
+                                args.IsValid = this.value.Locations.Any();
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        public static ISqlHelper SqlHelper
+        {
+            get
+            {
+                return Application.SqlHelper;
+            }
         }
 
         protected override void OnLoad(EventArgs e)

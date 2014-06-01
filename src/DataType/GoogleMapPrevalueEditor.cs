@@ -55,16 +55,14 @@ namespace Umbraco.GoogleMaps.DataType
             _txtWidth = new TextBox();
             _txtWidth.ID = "txtWidth";
             propertyPanel = new PropertyPanel();
-            propertyPanel.Text = "Width";
+            propertyPanel.Text = "Width & Height";
             propertyPanel.Controls.Add(_txtWidth);
-            Controls.Add(propertyPanel);
-
+            propertyPanel.Controls.Add(new Literal() { Text = " x " });
             _txtHeight = new TextBox();
             _txtHeight.ID = "txtHeight";
-            propertyPanel = new PropertyPanel();
-            propertyPanel.Text = "Height";
             propertyPanel.Controls.Add(_txtHeight);
             Controls.Add(propertyPanel);
+
 
             _txtZoom = new TextBox();
             _txtZoom.ID = "txtZoom";
@@ -97,19 +95,17 @@ namespace Umbraco.GoogleMaps.DataType
             _txtCenterLatitude = new TextBox();
             _txtCenterLatitude.ID = "txtCenterLatitude";
             propertyPanel = new PropertyPanel();
-            propertyPanel.Text = "Center latitude";
+            propertyPanel.Text = "Center latitude & longitude";
             propertyPanel.Controls.Add(_txtCenterLatitude);
-            Controls.Add(propertyPanel);
-
+            propertyPanel.Controls.Add(new Literal() { Text = " : " });
             _txtCenterLongitude = new TextBox();
             _txtCenterLongitude.ID = "txtCenterLongitude";
-            propertyPanel = new PropertyPanel();
-            propertyPanel.Text = "Center longitude";
             propertyPanel.Controls.Add(_txtCenterLongitude);
+
             Controls.Add(propertyPanel);
 
             HtmlButton _htmlLocationButton = new HtmlButton();
-            _htmlLocationButton.InnerText = "Get current location";
+            _htmlLocationButton.InnerText = "use my current location";
             _htmlLocationButton.ID = "btnGetLocation";
             _htmlLocationButton.Attributes.Add("class", "current-location");
             _htmlLocationButton.Attributes.Add("type", "button");

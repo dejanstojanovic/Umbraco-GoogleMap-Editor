@@ -14,5 +14,7 @@ namespace Umbraco.GoogleMaps.DataType
         public const double DEFAULT_LAT = 25.0417;
         public const double DEFAULT_LNG = 55.2194;
         public static string[] DEFAULT_DRAWINGTOOLS = new string[] { "marker", "polyline", "polygon", "circle", "rectangle" };
+
+        public const string DATATYPE_GUID = "BD6402ED-54A5-40CF-8DD0-C35EFE4C510C";
     }
 }

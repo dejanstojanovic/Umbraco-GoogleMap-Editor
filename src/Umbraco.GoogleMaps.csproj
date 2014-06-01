@@ -130,6 +130,17 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\settings-logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="References\businesslogic.dll" />
+    <Content Include="References\cms.dll" />
+    <Content Include="References\controls.dll" />
+    <Content Include="References\interfaces.dll" />
+    <Content Include="References\Umbraco.Core.dll" />
+    <Content Include="References\umbraco.DataLayer.dll" />
+    <Content Include="References\umbraco.dll" />
+    <Content Include="References\umbraco.editorControls.dll" />
+    <Content Include="References\umbraco.providers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
