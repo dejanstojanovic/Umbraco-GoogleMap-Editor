@@ -55,6 +55,44 @@ namespace Umbraco.GoogleMaps.DataType
             }
         }
 
+        public bool IsValid
+        {
+            get
+            {
+                var contentSvc = Umbraco.Core.ApplicationContext.Current.Services.ContentService;
+                var dataTypeSvc = Umbraco.Core.ApplicationContext.Current.Services.DataTypeService;
+                int pageId = 0;
+                if (HttpContext.Current.Request["id"] != null)
+                {
+                    if (contentSvc != null && int.TryParse(HttpContext.Current.Request["id"].ToString(), out pageId))
+                    {
+                        IContent currentPage = contentSvc.GetById(pageId);
+                        if (currentPage != null)
+                        {
+                            int propertyId = int.Parse(this._data.GetType().GetProperty("PropertyId").GetValue(this._data).ToString());
+                            Property property = currentPage.Properties.Where(p => p.Id == propertyId).FirstOrDefault();
+                            if (property != null)
+                            {
+                                int propertyTypeId = SqlHelper.ExecuteScalar<int>("select propertytypeid from cmsPropertyData where id = @id", SqlHelper.CreateParameter("@id", propertyId));
+                                PropertyType propertyType = currentPage.ContentType.PropertyTypes.Where(p => p.Id == propertyTypeId).FirstOrDefault();
+
+                                if (propertyType != null && propertyType.Id > 0)
+                                {
+                                    _validator.ErrorMessage = string.Format("Propety \"{0}\" is mandatory", propertyType.Name);
+
+                                    if (propertyType.Mandatory)
+                                    {
+                                        return this.value.Locations != null ? this.value.Locations.Any() : false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
         public Control Editor { get { return this; } }
 
         public void Save()
@@ -92,46 +130,14 @@ namespace Umbraco.GoogleMaps.DataType
             this.Controls.Add(mainDiv);
 
             _validator = new CustomValidator();
-            
+
             _validator.ServerValidate += validator_ServerValidate;
             this.Controls.Add(_validator);
         }
 
         void validator_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            //int propId = this._data.PropertyId;
-            var contentSvc = Umbraco.Core.ApplicationContext.Current.Services.ContentService;
-            var dataTypeSvc = Umbraco.Core.ApplicationContext.Current.Services.DataTypeService;
-            int pageId = 0;
-            if (HttpContext.Current.Request["id"] != null)
-            {
-                if (contentSvc != null && int.TryParse(HttpContext.Current.Request["id"].ToString(), out pageId))
-                {
-                    IContent currentPage = contentSvc.GetById(pageId);
-                    if (currentPage != null)
-                    {
-
-                        int propertyId = int.Parse(this._data.GetType().GetProperty("PropertyId").GetValue(this._data).ToString());
-                        Property property = currentPage.Properties.Where(p => p.Id == propertyId).FirstOrDefault();
-                        if (property != null)
-                        {
-
-                            _validator.ErrorMessage = string.Format("Propety \"{0}\" is mandatory",property.Alias);
-
-                            int propertyTypeId = SqlHelper.ExecuteScalar<int>("select propertytypeid from cmsPropertyData where id = @id", SqlHelper.CreateParameter("@id", propertyId));
-
-                            IDataTypeDefinition def = dataTypeSvc.GetAllDataTypeDefinitions().ToArray().Where(p => p.ControlId == new Guid(Constants.DATATYPE_GUID)).FirstOrDefault();
-                            PropertyType propertyType = new PropertyType(def);
-
-                            if (propertyType != null && propertyType.Id > 0 && propertyType.Mandatory)
-                            {
-                                args.IsValid = this.value.Locations.Any();
-                            }
-                        }
-
-                    }
-                }
-            }
+            args.IsValid = this.IsValid;
         }
 
         public static ISqlHelper SqlHelper
