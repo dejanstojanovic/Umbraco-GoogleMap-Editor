@@ -1,4 +1,5 @@
-Umbraco-GoogleMap-Editor
-========================
+![alt tag](http://dejanstojanovic.net/media/13086/git-page-logo.png)
 
-Advanced Umbraco GoogleMap editor package
+Advanced Umbraco GoogleMap Editor Package
+
+
