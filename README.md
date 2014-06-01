@@ -3,3 +3,5 @@
 Advanced Umbraco GoogleMap Editor Package
 
 
+More details at [http://dejanstojanovic.net/umbraco-googlemap-editor](http://dejanstojanovic.net/umbraco-googlemap-editor/)
+
