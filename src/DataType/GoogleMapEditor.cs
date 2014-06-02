@@ -82,7 +82,8 @@ namespace Umbraco.GoogleMaps.DataType
 
                                     if (propertyType.Mandatory)
                                     {
-                                        return this.value.Locations != null ? this.value.Locations.Any() : false;
+                                        MapState _value = MapState.Deserialize(ctlValue.Value);
+                                        return (_value!=null && _value.Locations != null) ? _value.Locations.Any() : false;
                                     }
                                 }
                             }
@@ -98,6 +99,17 @@ namespace Umbraco.GoogleMaps.DataType
         public void Save()
         {
             this._data.Value = ctlValue.Value;
+
+            if (!IsValid)
+            {
+                Umbraco.Core.Services.ContentService.Published += ContentService_Published;
+            }
+        }
+
+        void ContentService_Published(Core.Publishing.IPublishingStrategy sender, Core.Events.PublishEventArgs<IContent> e)
+        {
+            //e.CanCancel = true;
+            //e.Cancel = true;
         }
 
         public bool ShowLabel

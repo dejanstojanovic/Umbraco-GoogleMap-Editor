@@ -444,7 +444,7 @@ $.fn.GoogleMapEditor = function (options) {
 
     function saveToJson(map) {
         var result = null;
-        if (map.locations.length > 0) {
+        //if (map.locations.length > 0) {
             var mapObject = new function () {
                 this.Zoom = map.getZoom();
                 this.Locations = map.locations;
@@ -455,7 +455,7 @@ $.fn.GoogleMapEditor = function (options) {
                 };
             }
             result = JSON.stringify(mapObject, ["Zoom", "Width", "Height", "SingleLocation", "Center", "Locations", "Coordinates", "Latitude", "Longitude", "Radius", "LocationType", "Icon", "Message", "BorderColor", "BorderWeight", "FillColor", "Tag"]);
-        }
+        //}
         $(map.container).next('input[type="hidden"]').val(result);
         return result;
     }
