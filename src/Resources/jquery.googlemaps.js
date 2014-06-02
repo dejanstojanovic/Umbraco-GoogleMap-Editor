@@ -1,4 +1,5 @@
-﻿
+﻿/* EDITOR */
+
 $.fn.GoogleMapEditor = function (options) {
     var defaults = {
         mapLanguage: "en",
@@ -6,21 +7,21 @@ $.fn.GoogleMapEditor = function (options) {
         drawingBorderColor: "#ff0000",
         drawingBorderWidth: 2,
         drawingFillColor: "#ffff00",
-        Zoom:13,
+        Zoom: 13,
         Center: {
             Latitude: 25.0417,
             Longitude: 55.2194
-        }, 
+        },
         mapSettings: {
             "Width": 800,
             "Height": 400,
             "SingleLocation": false,
             "SearchBox": true,
-            "RichtextEditor":false,
+            "RichtextEditor": false,
             "DrawingTools": ["marker", "polyline", "polygon", "circle", "rectangle"],
             "Locations": []
         }
-       
+
     }
     var settings = $.extend({}, defaults, options);
     var tinyMceUrl = "//tinymce.cachefly.net/4.0/tinymce.min.js";
@@ -96,7 +97,7 @@ $.fn.GoogleMapEditor = function (options) {
             method: "GET",
             dataType: "text html",
             success: function (data) {
-                popupTemplateCircle = data.replace(/"/g, '');
+                popupTemplateCircle = data;
             }
         });
 
@@ -105,7 +106,7 @@ $.fn.GoogleMapEditor = function (options) {
             method: "GET",
             dataType: "text html",
             success: function (data) {
-                popupTemplateRectangle = data.replace(/"/g, '');
+                popupTemplateRectangle = data;
             }
         });
 
@@ -114,7 +115,7 @@ $.fn.GoogleMapEditor = function (options) {
             method: "GET",
             dataType: "text html",
             success: function (data) {
-                popupTemplateMarker = data.replace(/"/g, '');
+                popupTemplateMarker = data;
             }
         });
 
@@ -123,7 +124,7 @@ $.fn.GoogleMapEditor = function (options) {
             method: "GET",
             dataType: "text html",
             success: function (data) {
-                popupTemplatePolyline = data.replace(/"/g, '');
+                popupTemplatePolyline = data;
             }
         });
 
@@ -132,7 +133,7 @@ $.fn.GoogleMapEditor = function (options) {
             method: "GET",
             dataType: "text html",
             success: function (data) {
-                popupTemplatePolygon = data.replace(/"/g, '');
+                popupTemplatePolygon = data;
             }
         });
 
@@ -163,7 +164,7 @@ $.fn.GoogleMapEditor = function (options) {
                 addSearchBox(map);
             }
 
-            if (map.locations!=null && map.locations.length > 0) {
+            if (map.locations != null && map.locations.length > 0) {
                 for (i = 0; i < map.locations.length; i++) {
                     initMapObject(map, map.locations[i]);
                 }
@@ -233,7 +234,7 @@ $.fn.GoogleMapEditor = function (options) {
             },
             drawingControlOptions: {
                 position: google.maps.ControlPosition.TOP_CENTER,
-                drawingModes:  settings.mapSettings.DrawingTools
+                drawingModes: settings.mapSettings.DrawingTools
             }
         });
 
@@ -257,7 +258,7 @@ $.fn.GoogleMapEditor = function (options) {
 
     }
 
-    function attachTransformHandlers(map,overlay,type) {
+    function attachTransformHandlers(map, overlay, type) {
 
         switch (type) {
             case google.maps.drawing.OverlayType.POLYLINE:
@@ -358,11 +359,10 @@ $.fn.GoogleMapEditor = function (options) {
                     position: new google.maps.LatLng(location.Coordinates[0].Latitude, location.Coordinates[0].Longitude),
                     Location: location
                 });
-                if (location.Icon != null && location.Icon != "")
-                {
+                if (location.Icon != null && location.Icon != "") {
                     marker.setIcon(new google.maps.MarkerImage(location.Icon));
                 }
-                
+
                 location.Overlay = marker;
                 attachLocationHandlers(map, location, google.maps.drawing.OverlayType.MARKER);
                 break;
@@ -445,16 +445,16 @@ $.fn.GoogleMapEditor = function (options) {
     function saveToJson(map) {
         var result = null;
         //if (map.locations.length > 0) {
-            var mapObject = new function () {
-                this.Zoom = map.getZoom();
-                this.Locations = map.locations;
-                this.SingleLocation = settings.mapSettings.SingleLocation;
-                this.Center = new function () {
-                    this.Latitude = map.getCenter().lat();
-                    this.Longitude = map.getCenter().lng();
-                };
-            }
-            result = JSON.stringify(mapObject, ["Zoom", "Width", "Height", "SingleLocation", "Center", "Locations", "Coordinates", "Latitude", "Longitude", "Radius", "LocationType", "Icon", "Message", "BorderColor", "BorderWeight", "FillColor", "Tag"]);
+        var mapObject = new function () {
+            this.Zoom = map.getZoom();
+            this.Locations = map.locations;
+            this.SingleLocation = settings.mapSettings.SingleLocation;
+            this.Center = new function () {
+                this.Latitude = map.getCenter().lat();
+                this.Longitude = map.getCenter().lng();
+            };
+        }
+        result = JSON.stringify(mapObject, ["Zoom", "Width", "Height", "SingleLocation", "Center", "Locations", "Coordinates", "Latitude", "Longitude", "Radius", "LocationType", "Icon", "Message", "BorderColor", "BorderWeight", "FillColor", "Tag"]);
         //}
         $(map.container).next('input[type="hidden"]').val(result);
         return result;
@@ -639,7 +639,7 @@ $.fn.GoogleMapEditor = function (options) {
                 map.activeLocation = null;
                 saveToJson(map);
                 map.infoWindow.close();
-                
+
             }
         });
     }

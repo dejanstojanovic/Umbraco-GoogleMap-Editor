@@ -20,15 +20,18 @@ namespace Umbraco.GoogleMaps.Controllers
     {
         [HttpGet]
         [ReturnHtmlOnly]
-        public string GetEditForm(string filename)
+        public HttpResponseMessage GetEditForm(string filename)
         {
-            return Common.GetResourceText(filename).Replace(System.Environment.NewLine, string.Empty).Replace("\"",string.Empty);
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(Common.GetResourceText(filename), System.Text.Encoding.UTF8, "application/html")
+            };
         }
         [HttpGet]
         [ReturnHtmlOnly]
-        public string GetMarkerEditForm(string filename)
+        public HttpResponseMessage GetMarkerEditForm(string filename)
         {
-            string result = Common.GetResourceText(filename).Replace(System.Environment.NewLine, string.Empty).Replace("\"", string.Empty); 
+            string result = Common.GetResourceText(filename);
             StringBuilder sbFiles = new StringBuilder();
 
             string folderPath = "/Umbraco/Images/MapPins/";
@@ -40,12 +43,23 @@ namespace Umbraco.GoogleMaps.Controllers
                 }
             }
 
-
-            return string.Format(result, sbFiles.ToString());
-
-            
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(string.Format(result, sbFiles.ToString()), System.Text.Encoding.UTF8, "application/html")
+            };
         }
 
+        [ReturnJavaScriptOnly]
+        public HttpResponseMessage GetEmbdededJavaScript(string filename)
+        {
+            string result = Common.GetResourceText(filename);
+
+            return new HttpResponseMessage()
+            {
+                Content = new StringContent(result, System.Text.Encoding.UTF8, "application/javascript")
+            };
+
+        }
 
         public HttpResponseMessage GetEmbededGif(string filename)
         {

@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiFilters\ReturnJavaScriptOnly.cs" />
     <Compile Include="ApiFilters\ReturnTextOnly.cs" />
     <Compile Include="ApiFilters\ReturnHtmlOnly.cs" />
     <Compile Include="ApiFilters\ReturnXmlOnly.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Extensions\IPublishedContentExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Models\MapState.cs" />
+    <Compile Include="Models\MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +142,10 @@
     <Content Include="References\umbraco.dll" />
     <Content Include="References\umbraco.editorControls.dll" />
     <Content Include="References\umbraco.providers.dll" />
+    <EmbeddedResource Include="Resources\jquery.googlemapview.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
