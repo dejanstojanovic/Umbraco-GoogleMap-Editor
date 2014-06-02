@@ -83,7 +83,7 @@ namespace Umbraco.GoogleMaps.DataType
                                     if (propertyType.Mandatory)
                                     {
                                         MapState _value = MapState.Deserialize(ctlValue.Value);
-                                        return (_value!=null && _value.Locations != null) ? _value.Locations.Any() : false;
+                                        return (_value != null && _value.Locations != null) ? _value.Locations.Any() : false;
                                     }
                                 }
                             }
@@ -102,15 +102,17 @@ namespace Umbraco.GoogleMaps.DataType
 
             if (!IsValid)
             {
-                Umbraco.Core.Services.ContentService.Published += ContentService_Published;
+                Umbraco.Core.Services.ContentService.Publishing += ContentService_Publishing;
             }
         }
 
-        void ContentService_Published(Core.Publishing.IPublishingStrategy sender, Core.Events.PublishEventArgs<IContent> e)
+        void ContentService_Publishing(Core.Publishing.IPublishingStrategy sender, Core.Events.PublishEventArgs<IContent> e)
         {
-            //e.CanCancel = true;
-            //e.Cancel = true;
+            //Umbraco.Web.UI.Pages.ClientTools client = new Umbraco.Web.UI.Pages.ClientTools((Page)HttpContext.Current.CurrentHandler);
+            //client.ShowSpeechBubble(Web.UI.SpeechBubbleIcon.Warning,"Publish",string.Format("{0} ({1}) could not be published because these properties {1} did not pass validation rules.");
+            e.Cancel = true;
         }
+
 
         public bool ShowLabel
         {
