@@ -176,7 +176,7 @@ $.fn.GoogleMapViewer = function (options) {
                 return false;
             }
 
-            map.infoWindow.setContent(location.Message);
+            map.infoWindow.setContent($('<div>').append($('<div class="popup-content"/>').html(location.Message)).html());
 
             var position = null;
             switch (type) {
@@ -215,5 +215,13 @@ $.fn.GoogleMapViewer = function (options) {
                                                  polygon.getPath().getAt(i).lng()));
         }
         return bounds.getCenter();
+    }
+
+    function htmlEncode(value) {
+        return $('<div/>').text(value).html();
+    }
+
+    function htmlDecode(value) {
+        return $('<div/>').html(value).text();
     }
 }

@@ -107,7 +107,6 @@
     <Compile Include="Extensions\IPublishedContentExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Models\MapState.cs" />
-    <Compile Include="Models\MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
