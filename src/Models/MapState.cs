@@ -42,6 +42,11 @@ namespace Umbraco.GoogleMaps.Models
         public List<Location> Locations { get; set; }
         public bool SearchBox { get; set; }
         public bool RichtextEditor { get; set; }
+        public bool ZoomControl { get; set; }
+        public bool PanControl { get; set; }
+        public bool ScaleControl { get; set; }
+        public bool StreetViewControl { get; set; }
+
         public string ToJSON()
         {
             string result = null;

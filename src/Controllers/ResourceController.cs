@@ -16,20 +16,22 @@ using System.Net;
 
 namespace Umbraco.GoogleMaps.Controllers
 {
-    public class ResourceController:UmbracoApiController
+    public class ResourceController : UmbracoApiController
     {
         [HttpGet]
         [ReturnHtmlOnly]
-        public HttpResponseMessage GetEditForm(string filename)
+        public HttpResponseMessage GetEditForm(string filename, bool richtext = false)
         {
             return new HttpResponseMessage()
             {
-                Content = new StringContent(Common.GetResourceText(filename), System.Text.Encoding.UTF8, "application/html")
+                Content = new StringContent(
+                    string.Format(Common.GetResourceText(filename), richtext ? "richtext-fix" : string.Empty)
+                    , System.Text.Encoding.UTF8, "application/html")
             };
         }
         [HttpGet]
         [ReturnHtmlOnly]
-        public HttpResponseMessage GetMarkerEditForm(string filename)
+        public HttpResponseMessage GetMarkerEditForm(string filename, bool richtext = false)
         {
             string result = Common.GetResourceText(filename);
             StringBuilder sbFiles = new StringBuilder();
@@ -45,7 +47,7 @@ namespace Umbraco.GoogleMaps.Controllers
 
             return new HttpResponseMessage()
             {
-                Content = new StringContent(string.Format(result, sbFiles.ToString()), System.Text.Encoding.UTF8, "application/html")
+                Content = new StringContent(string.Format(result, sbFiles.ToString(), richtext ? "richtext-fix" : string.Empty), System.Text.Encoding.UTF8, "application/html")
             };
         }
 

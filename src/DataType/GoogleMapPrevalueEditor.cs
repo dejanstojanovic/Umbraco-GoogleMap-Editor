@@ -27,6 +27,11 @@ namespace Umbraco.GoogleMaps.DataType
         private TextBox _txtCenterLatitude;
         private TextBox _txtCenterLongitude;
 
+        private CheckBox _cbZoomControl;
+        private CheckBox _cbPanControl;
+        private CheckBox _cbScaleControl;
+        private CheckBox _cbStreetViewControl;
+
         private CheckBoxList _cblDrawingTools;
 
 
@@ -127,6 +132,35 @@ namespace Umbraco.GoogleMaps.DataType
             propertyPanel.Text = "Drawing tools";
             propertyPanel.Controls.Add(_cblDrawingTools);
             Controls.Add(propertyPanel);
+
+            _cbZoomControl = new CheckBox();
+            _cbZoomControl.ID = "cbZoomControl";
+            propertyPanel = new PropertyPanel();
+            propertyPanel.Text = "Zoom control";
+            propertyPanel.Controls.Add(_cbZoomControl);
+            Controls.Add(propertyPanel);
+
+            _cbPanControl = new CheckBox();
+            _cbPanControl.ID = "cbPanControl";
+            propertyPanel = new PropertyPanel();
+            propertyPanel.Text = "Pan control";
+            propertyPanel.Controls.Add(_cbPanControl);
+            Controls.Add(propertyPanel);
+
+            _cbStreetViewControl = new CheckBox();
+            _cbStreetViewControl.ID = "cbStreetViewControl";
+            propertyPanel = new PropertyPanel();
+            propertyPanel.Text = "StreetView control";
+            propertyPanel.Controls.Add(_cbStreetViewControl);
+            Controls.Add(propertyPanel);
+
+            _cbScaleControl = new CheckBox();
+            _cbScaleControl.ID = "cbScaleControl";
+            propertyPanel = new PropertyPanel();
+            propertyPanel.Text = "Scale control";
+            propertyPanel.Controls.Add(_cbScaleControl);
+            Controls.Add(propertyPanel);
+
         }
 
 
@@ -149,18 +183,24 @@ namespace Umbraco.GoogleMaps.DataType
                 if (conf != null)
                     return MapState.Deserialize(conf.ToString());
                 else
-                    return new MapState() { 
-                        Width = Constants.DEFAULT_WIDTH, 
-                        Height = Constants.DEFAULT_HEIGHT, 
-                        Zoom = Constants.DEFAULT_ZOOM, 
+                    return new MapState()
+                    {
+                        Width = Constants.DEFAULT_WIDTH,
+                        Height = Constants.DEFAULT_HEIGHT,
+                        Zoom = Constants.DEFAULT_ZOOM,
                         DrawingTools = Constants.DEFAULT_DRAWINGTOOLS,
                         SingleLocation = false,
                         SearchBox = true,
                         RichtextEditor = false,
-                        Center = new Center { 
-                            Latitude = Constants.DEFAULT_LAT, 
-                            Longitude = Constants.DEFAULT_LNG 
-                        } 
+                        ZoomControl = true,
+                        PanControl = true,
+                        StreetViewControl = true,
+                        ScaleControl = true,
+                        Center = new Center
+                        {
+                            Latitude = Constants.DEFAULT_LAT,
+                            Longitude = Constants.DEFAULT_LNG
+                        }
                     };
             }
         }
@@ -190,7 +230,7 @@ namespace Umbraco.GoogleMaps.DataType
                     drawingTools.Add(item.Value);
                 }
             }
-            
+
 
             MapState data = new MapState()
             {
@@ -201,6 +241,10 @@ namespace Umbraco.GoogleMaps.DataType
                 RichtextEditor = this._cbRichText.Checked,
                 DrawingTools = drawingTools.ToArray<string>(),
                 SingleLocation = this._cbSingleLocation.Checked,
+                ZoomControl = this._cbZoomControl.Checked,
+                PanControl = this._cbPanControl.Checked,
+                StreetViewControl = this._cbStreetViewControl.Checked,
+                ScaleControl = this._cbScaleControl.Checked,
                 Center = new Center() { Latitude = lat, Longitude = lng }
             };
 
@@ -241,6 +285,11 @@ namespace Umbraco.GoogleMaps.DataType
                     _cbSingleLocation.Checked = Configuration.SingleLocation;
                     _cbSearchBox.Checked = Configuration.SearchBox;
                     _cbRichText.Checked = Configuration.RichtextEditor;
+                    _cbZoomControl.Checked = Configuration.ZoomControl;
+                    _cbPanControl.Checked = Configuration.PanControl;
+                    _cbStreetViewControl.Checked = Configuration.StreetViewControl;
+                    _cbScaleControl.Checked = Configuration.ScaleControl;
+
                     if (Configuration.DrawingTools != null)
                     {
                         foreach (ListItem item in this._cblDrawingTools.Items)
@@ -274,6 +323,10 @@ namespace Umbraco.GoogleMaps.DataType
                     _cbSingleLocation.Checked = false;
                     _cbSearchBox.Checked = true;
                     _cbRichText.Checked = false;
+                    _cbZoomControl.Checked = true;
+                    _cbPanControl.Checked = true;
+                    _cbStreetViewControl.Checked = true;
+                    _cbScaleControl.Checked = true;
 
                     foreach (ListItem item in this._cblDrawingTools.Items)
                     {

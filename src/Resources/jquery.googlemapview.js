@@ -12,6 +12,10 @@ $.fn.GoogleMapViewer = function (options) {
         mapSettings: {
             "Width": 800,
             "Height": 400,
+            "ZoomControl": true,
+            "PanControl": true,
+            "ScaleControl": true,
+            "StreetViewControl": true,
             "Locations": []
         }
     };
@@ -50,10 +54,10 @@ $.fn.GoogleMapViewer = function (options) {
         map = new google.maps.Map(container, {
             center: new google.maps.LatLng(settings.Center.Latitude, settings.Center.Longitude),
             zoom: settings.mapSettings.Zoom,
-            zoomControl: true,
-            panControl: true,
-            scaleControl: true,
-            streetViewControl: true,
+            zoomControl: settings.mapSettings.ZoomControl,
+            panControl: settings.mapSettings.PanControl,
+            scaleControl: settings.mapSettings.ScaleControl,
+            streetViewControl: settings.mapSettings.streetViewControl,
             infoWindow: null
         });
 

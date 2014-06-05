@@ -46,6 +46,10 @@ namespace Umbraco.GoogleMaps.DataType
                     SingleLocation = false,
                     SearchBox = true,
                     RichtextEditor = false,
+                    ZoomControl = true,
+                    PanControl = true,
+                    StreetViewControl = true,
+                    ScaleControl = true,
                     Center = new Center
                     {
                         Latitude = Constants.DEFAULT_LAT,
@@ -180,6 +184,11 @@ namespace Umbraco.GoogleMaps.DataType
                         mapVal.DrawingTools = value.DrawingTools;
                         mapVal.SearchBox = value.SearchBox;
                         mapVal.RichtextEditor = value.RichtextEditor;
+                        mapVal.ZoomControl = value.ZoomControl;
+                        mapVal.PanControl = value.PanControl;
+                        mapVal.StreetViewControl = value.StreetViewControl;
+                        mapVal.ScaleControl = value.ScaleControl;
+
                         this.ctlValue.Value = mapVal.ToJSON();
                     }
 

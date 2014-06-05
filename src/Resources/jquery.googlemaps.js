@@ -19,6 +19,10 @@ $.fn.GoogleMapEditor = function (options) {
             "SearchBox": true,
             "RichtextEditor": false,
             "DrawingTools": ["marker", "polyline", "polygon", "circle", "rectangle"],
+            "ZoomControl": true,
+            "PanControl": true,
+            "ScaleControl": true,
+            "StreetViewControl": true,
             "Locations": []
         }
 
@@ -27,13 +31,14 @@ $.fn.GoogleMapEditor = function (options) {
     var tinyMceUrl = "//tinymce.cachefly.net/4.0/tinymce.min.js";
     var mapApiUrl = "//maps.googleapis.com/maps/api/js?sensor=false&callback=mapApiLoaded&libraries=drawing,places";
 
+
     var popupTemplateCircle = null;
     var popupTemplateRectangle = null;
     var popupTemplateMarker = null;
     var popupTemplatePolyline = null;
     var popupTemplatePolygon = null;
 
-    loadPopupTemplates();
+    //loadPopupTemplates();
 
     var selector = $(this);
 
@@ -93,7 +98,7 @@ $.fn.GoogleMapEditor = function (options) {
 
     function loadPopupTemplates() {
         $.ajax({
-            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-circle.html",
+            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-circle.html&richtext=" + settings.mapSettings.RichtextEditor,
             method: "GET",
             dataType: "text html",
             success: function (data) {
@@ -101,8 +106,9 @@ $.fn.GoogleMapEditor = function (options) {
             }
         });
 
+        
         $.ajax({
-            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-rectangle.html",
+            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-rectangle.html&richtext=" + settings.mapSettings.RichtextEditor,
             method: "GET",
             dataType: "text html",
             success: function (data) {
@@ -111,7 +117,7 @@ $.fn.GoogleMapEditor = function (options) {
         });
 
         $.ajax({
-            url: "/Umbraco/Api/Resource/GetMarkerEditForm?filename=popup-template-marker.html",
+            url: "/Umbraco/Api/Resource/GetMarkerEditForm?filename=popup-template-marker.html&richtext=" + settings.mapSettings.RichtextEditor,
             method: "GET",
             dataType: "text html",
             success: function (data) {
@@ -120,7 +126,7 @@ $.fn.GoogleMapEditor = function (options) {
         });
 
         $.ajax({
-            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-polyline.html",
+            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-polyline.html&richtext=" + settings.mapSettings.RichtextEditor,
             method: "GET",
             dataType: "text html",
             success: function (data) {
@@ -129,7 +135,7 @@ $.fn.GoogleMapEditor = function (options) {
         });
 
         $.ajax({
-            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-polygon.html",
+            url: "/Umbraco/Api/Resource/GetEditForm?filename=popup-template-polygon.html&richtext=" + settings.mapSettings.RichtextEditor,
             method: "GET",
             dataType: "text html",
             success: function (data) {
@@ -145,13 +151,15 @@ $.fn.GoogleMapEditor = function (options) {
             settings.mapSettings = $.parseJSON($(container).next('input[type="hidden"]').val());
         }
 
+        loadPopupTemplates();
+
         map = new google.maps.Map(container, {
             center: new google.maps.LatLng(settings.Center.Latitude, settings.Center.Longitude),
             zoom: settings.mapSettings.Zoom,
-            zoomControl: true,
-            panControl: true,
-            scaleControl: true,
-            streetViewControl: true,
+            zoomControl: settings.mapSettings.ZoomControl,
+            panControl: settings.mapSettings.PanControl,
+            scaleControl: settings.mapSettings.ScaleControl,
+            streetViewControl: settings.mapSettings.StreetViewControl,
             infoWindow: null
         });
 
