@@ -57,7 +57,7 @@ $.fn.GoogleMapViewer = function (options) {
             zoomControl: settings.mapSettings.ZoomControl,
             panControl: settings.mapSettings.PanControl,
             scaleControl: settings.mapSettings.ScaleControl,
-            streetViewControl: settings.mapSettings.streetViewControl,
+            streetViewControl: settings.mapSettings.StreetViewControl,
             infoWindow: null
         });
 
