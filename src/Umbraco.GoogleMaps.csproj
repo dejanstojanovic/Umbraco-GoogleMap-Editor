@@ -103,6 +103,7 @@
     <Compile Include="DataType\GoogleMapEditor.cs" />
     <Compile Include="DataType\GoogleMapPrevalueEditor.cs" />
     <Compile Include="DataType\GoogleMapDataType.cs" />
+    <Compile Include="Extensions\CultureInfoExtensions.cs" />
     <Compile Include="Extensions\IContentExtensions.cs" />
     <Compile Include="Extensions\IPublishedContentExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
@@ -141,6 +142,7 @@
     <Content Include="References\umbraco.dll" />
     <Content Include="References\umbraco.editorControls.dll" />
     <Content Include="References\umbraco.providers.dll" />
+    <EmbeddedResource Include="Resources\Error.png" />
     <EmbeddedResource Include="Resources\jquery.googlemapview.js" />
   </ItemGroup>
   <ItemGroup />
