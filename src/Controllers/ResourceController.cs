@@ -8,11 +8,13 @@ using Umbraco.GoogleMaps.ApiFilters;
 using System.Web.Http;
 using System.IO;
 using System.Web;
+using System.Web.UI;
 using System.Drawing;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Drawing.Imaging;
 using System.Net;
+using System.Web.UI.HtmlControls;
 
 namespace Umbraco.GoogleMaps.Controllers
 {
@@ -41,7 +43,18 @@ namespace Umbraco.GoogleMaps.Controllers
             {
                 foreach (string file in Directory.GetFiles(HttpContext.Current.Server.MapPath(folderPath)))
                 {
-                    sbFiles.Append(string.Format("<option value='{0}'>{1}</option>", string.Concat(folderPath, Path.GetFileName(file)), Path.GetFileName(file)));
+                    using (StringWriter stringWriter = new StringWriter())
+                    {
+                        using (HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter))
+                        {
+                            HtmlGenericControl optionHtml = new HtmlGenericControl("option");
+                            optionHtml.Attributes.Add("value", string.Concat(folderPath, Path.GetFileName(file)));
+                            optionHtml.InnerText = Path.GetFileName(file);
+                            optionHtml.RenderControl(htmlWriter);
+                            sbFiles.Append(stringWriter.ToString());
+                            optionHtml.Dispose();
+                        }
+                    }
                 }
             }
 
