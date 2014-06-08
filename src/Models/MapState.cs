@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Umbraco.GoogleMaps.Models
 {
+
     public class Center
     {
         public double Latitude { get; set; }
@@ -33,6 +35,7 @@ namespace Umbraco.GoogleMaps.Models
 
     public class MapState
     {
+        public string Language { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int Zoom { get; set; }
@@ -47,6 +50,10 @@ namespace Umbraco.GoogleMaps.Models
         public bool ScaleControl { get; set; }
         public bool StreetViewControl { get; set; }
 
+        /// <summary>
+        /// Serializes MapState class instace to JSON string
+        /// </summary>
+        /// <returns>Serialized JSON string</returns>
         public string ToJSON()
         {
             string result = null;
@@ -55,6 +62,11 @@ namespace Umbraco.GoogleMaps.Models
             return result;
         }
 
+        /// <summary>
+        /// Return MapState class instance from JSON string
+        /// </summary>
+        /// <param name="mapJSON"></param>
+        /// <returns>MapState class instance</returns>
         public static MapState Deserialize(string mapJSON)
         {
             MapState result = null;
@@ -63,7 +75,7 @@ namespace Umbraco.GoogleMaps.Models
             {
                 result = serializer.Deserialize<MapState>(mapJSON);
             }
-            catch (Exception ex)
+            catch
             {
                 result = null;
             }
