@@ -42,6 +42,7 @@ namespace Umbraco.GoogleMaps.DataType
                     Width = Constants.DEFAULT_WIDTH,
                     Height = Constants.DEFAULT_HEIGHT,
                     Zoom = Constants.DEFAULT_ZOOM,
+                    Language = Constants.DEFAULT_LANGUAGE,
                     DrawingTools = Constants.DEFAULT_DRAWINGTOOLS,
                     SingleLocation = false,
                     SearchBox = true,
@@ -179,6 +180,7 @@ namespace Umbraco.GoogleMaps.DataType
                     if (mapVal != null)
                     {
                         mapVal.SingleLocation = value.SingleLocation;
+                        mapVal.Language = value.Language;
                         mapVal.Width = value.Width;
                         mapVal.Height = value.Height;
                         mapVal.DrawingTools = value.DrawingTools;

@@ -8,6 +8,7 @@ namespace Umbraco.GoogleMaps.DataType
 {
     public static class Constants
     {
+        public const string DEFAULT_LANGUAGE = "en";
         public const int DEFAULT_ZOOM = 15;
         public const int DEFAULT_WIDTH = 800;
         public const int DEFAULT_HEIGHT = 400;

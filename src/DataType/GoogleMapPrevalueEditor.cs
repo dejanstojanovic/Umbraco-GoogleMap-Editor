@@ -10,6 +10,10 @@ using umbraco.BusinessLogic;
 using umbraco.uicontrols;
 using Umbraco.GoogleMaps.Models;
 using System.Web.UI.HtmlControls;
+using System.Globalization;
+using System.IO;
+using System.Web.UI;
+using Umbraco.GoogleMaps.Extensions;
 
 namespace Umbraco.GoogleMaps.DataType
 {
@@ -31,6 +35,8 @@ namespace Umbraco.GoogleMaps.DataType
         private CheckBox _cbPanControl;
         private CheckBox _cbScaleControl;
         private CheckBox _cbStreetViewControl;
+
+        private DropDownList _ddlLanguages;
 
         private CheckBoxList _cblDrawingTools;
 
@@ -62,10 +68,14 @@ namespace Umbraco.GoogleMaps.DataType
             propertyPanel = new PropertyPanel();
             propertyPanel.Text = "Width & Height";
             propertyPanel.Controls.Add(_txtWidth);
+            AddRequiredValidator(_txtWidth);
+
             propertyPanel.Controls.Add(new Literal() { Text = " x " });
+
             _txtHeight = new TextBox();
             _txtHeight.ID = "txtHeight";
             propertyPanel.Controls.Add(_txtHeight);
+            AddRequiredValidator(_txtHeight);
             Controls.Add(propertyPanel);
 
 
@@ -74,6 +84,7 @@ namespace Umbraco.GoogleMaps.DataType
             propertyPanel = new PropertyPanel();
             propertyPanel.Text = "Zoom";
             propertyPanel.Controls.Add(_txtZoom);
+            AddRequiredValidator(_txtZoom);
             Controls.Add(propertyPanel);
 
             _cbSingleLocation = new CheckBox();
@@ -102,10 +113,13 @@ namespace Umbraco.GoogleMaps.DataType
             propertyPanel = new PropertyPanel();
             propertyPanel.Text = "Center latitude & longitude";
             propertyPanel.Controls.Add(_txtCenterLatitude);
+            AddRequiredValidator(_txtCenterLatitude);
+
             propertyPanel.Controls.Add(new Literal() { Text = " : " });
             _txtCenterLongitude = new TextBox();
             _txtCenterLongitude.ID = "txtCenterLongitude";
             propertyPanel.Controls.Add(_txtCenterLongitude);
+            AddRequiredValidator(_txtCenterLongitude);
 
             Controls.Add(propertyPanel);
 
@@ -161,6 +175,26 @@ namespace Umbraco.GoogleMaps.DataType
             propertyPanel.Controls.Add(_cbScaleControl);
             Controls.Add(propertyPanel);
 
+            _ddlLanguages = new DropDownList();
+            _ddlLanguages.ID = "ddlLanguages";
+            propertyPanel = new PropertyPanel();
+            propertyPanel.Text = "Language in map editor";
+            foreach (string supportedLanguage in Extensions.CultureInfoExtensions.GoogleMapsSupportedLanguageCodes)
+            {
+                CultureInfo culture;
+                try
+                {
+                    culture = new CultureInfo(supportedLanguage);
+                    _ddlLanguages.Items.Add(new ListItem(culture.EnglishName, supportedLanguage));
+                }
+                catch
+                {
+                    _ddlLanguages.Items.Add(new ListItem(supportedLanguage, supportedLanguage));
+                }
+            }
+            propertyPanel.Controls.Add(_ddlLanguages);
+            Controls.Add(propertyPanel);
+
         }
 
 
@@ -170,6 +204,40 @@ namespace Umbraco.GoogleMaps.DataType
             {
                 return this;
             }
+        }
+
+        /// <summary>
+        /// Generates and adds validator for textbox control
+        /// </summary>
+        /// <param name="requiredField">TextBox for which RequiredField validator will be added</param>
+        public void AddRequiredValidator(TextBox requiredField){
+
+            RequiredFieldValidator validator = new RequiredFieldValidator();
+            validator.ControlToValidate = requiredField.ID;
+            validator.EnableClientScript = true;
+            validator.SetFocusOnError = true;
+
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter))
+                {
+                    //Generate container div control
+                    HtmlImage imageControl = new HtmlImage();
+                    imageControl.Src = "/Umbraco/Api/Resource/GetEmbededPng?filename=Error.png";
+                    imageControl.Attributes.Add("class", "error-icon");
+                    imageControl.Attributes.Add("title", "This input field is mandatory!");
+                    //Generate HTML string and dispose object 
+                    imageControl.RenderControl(htmlWriter);
+
+                    validator.ErrorMessage = stringWriter.ToString();
+
+                    imageControl.Dispose();
+                }
+            }
+
+            
+            validator.Display = ValidatorDisplay.Dynamic;
+            requiredField.Parent.Controls.AddAt(requiredField.Parent.Controls.IndexOf(requiredField)+1, validator);
         }
 
         public MapState Configuration
@@ -196,6 +264,7 @@ namespace Umbraco.GoogleMaps.DataType
                         PanControl = true,
                         StreetViewControl = true,
                         ScaleControl = true,
+                        Language = Constants.DEFAULT_LANGUAGE,
                         Center = new Center
                         {
                             Latitude = Constants.DEFAULT_LAT,
@@ -234,6 +303,7 @@ namespace Umbraco.GoogleMaps.DataType
 
             MapState data = new MapState()
             {
+                Language = this._ddlLanguages.SelectedValue,
                 Height = height,
                 Width = width,
                 Zoom = zoom,
@@ -267,6 +337,7 @@ namespace Umbraco.GoogleMaps.DataType
         protected override void OnInit(EventArgs e)
         {
             Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "MappConfigJavaSCript", Common.GetResourceText("settings.init.js"), true);
+            Page.RegisterStyleSheetBlock("MapConfigCss", Common.GetResourceText("mapstyle.css"));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -274,9 +345,12 @@ namespace Umbraco.GoogleMaps.DataType
             base.OnLoad(e);
             if (!Page.IsPostBack)
             {
+                
 
                 if (Configuration != null)
                 {
+                    string lang = !string.IsNullOrWhiteSpace(Configuration.Language) ? Configuration.Language : Constants.DEFAULT_LANGUAGE;
+
                     _txtWidth.Text = Configuration.Width.ToString();
                     _txtHeight.Text = Configuration.Height.ToString();
                     _txtZoom.Text = Configuration.Zoom.ToString();
@@ -289,6 +363,8 @@ namespace Umbraco.GoogleMaps.DataType
                     _cbPanControl.Checked = Configuration.PanControl;
                     _cbStreetViewControl.Checked = Configuration.StreetViewControl;
                     _cbScaleControl.Checked = Configuration.ScaleControl;
+
+                    _ddlLanguages.SelectedIndex = _ddlLanguages.Items.IndexOf(_ddlLanguages.Items.FindByValue(lang));
 
                     if (Configuration.DrawingTools != null)
                     {
@@ -327,7 +403,7 @@ namespace Umbraco.GoogleMaps.DataType
                     _cbPanControl.Checked = true;
                     _cbStreetViewControl.Checked = true;
                     _cbScaleControl.Checked = true;
-
+                    _ddlLanguages.SelectedIndex = _ddlLanguages.Items.IndexOf(_ddlLanguages.Items.FindByValue(Constants.DEFAULT_LANGUAGE));
                     foreach (ListItem item in this._cblDrawingTools.Items)
                     {
                         item.Selected = true;
