@@ -2,7 +2,6 @@
 
 $.fn.GoogleMapViewer = function (options) {
     var defaults = {
-        mapLanguage: "en",
         editMode: false,
         Zoom: 13,
         Center: {
@@ -12,6 +11,7 @@ $.fn.GoogleMapViewer = function (options) {
         mapSettings: {
             "Width": 800,
             "Height": 400,
+            "Language": "en",
             "ZoomControl": true,
             "PanControl": true,
             "ScaleControl": true,
@@ -21,6 +21,10 @@ $.fn.GoogleMapViewer = function (options) {
     };
     var settings = $.extend({}, defaults, options);
     var mapApiUrl = "//maps.googleapis.com/maps/api/js?sensor=false&callback=mapApiLoaded&libraries=drawing,places";
+
+    if (settings.mapSettings.Language != "") {
+        mapApiUrl += "&language=" + settings.mapSettings.Language;
+    }
 
     var selector = $(this);
 

@@ -3,7 +3,7 @@
     width: 800px;
     height: 500px;
     background-color: #DBDBDB;
-    background-image: url('/Umbraco/Api/Resource/GetEmbededGif?filename=map-load.gif');
+    background-image: url(/Umbraco/Api/Resource/GetEmbededGif?filename=map-load.gif);
     background-position: center center;
     background-repeat: no-repeat;
 }
@@ -73,4 +73,10 @@
 {
     padding-top: 6px;
     padding-bottom: 6px;
+}
+
+.error-icon
+{
+    margin-left: 4px;
+    vertical-align: middle;
 }

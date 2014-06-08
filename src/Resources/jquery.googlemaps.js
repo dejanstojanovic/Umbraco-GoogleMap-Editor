@@ -2,7 +2,6 @@
 
 $.fn.GoogleMapEditor = function (options) {
     var defaults = {
-        mapLanguage: "en",
         editMode: true,
         drawingBorderColor: "#ff0000",
         drawingBorderWidth: 2,
@@ -15,6 +14,7 @@ $.fn.GoogleMapEditor = function (options) {
         mapSettings: {
             "Width": 800,
             "Height": 400,
+            "Language": "en",
             "SingleLocation": false,
             "SearchBox": true,
             "RichtextEditor": false,
@@ -31,6 +31,14 @@ $.fn.GoogleMapEditor = function (options) {
     var tinyMceUrl = "//tinymce.cachefly.net/4.0/tinymce.min.js";
     var mapApiUrl = "//maps.googleapis.com/maps/api/js?sensor=false&callback=mapApiLoaded&libraries=drawing,places";
 
+    //Load settings for the first editor to determine map language
+    if ($(this).first().next('input[type="hidden"]').length > 0 && $(this).first().next('input[type="hidden"]').val() != "") {
+        settings.mapSettings = $.parseJSON($(this).first().next('input[type="hidden"]').val());
+    }
+    
+    if (settings.mapSettings.mapLanguage != "") {
+        mapApiUrl += "&language=" + settings.mapSettings.Language;
+    }
 
     var popupTemplateCircle = null;
     var popupTemplateRectangle = null;
