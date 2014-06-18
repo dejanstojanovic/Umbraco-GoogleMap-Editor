@@ -547,10 +547,38 @@ $.fn.GoogleMapEditor = function (options) {
 
                 var borderColorInput = $(map.container).find('.popup-content input[name="strokeColor"]');
                 var fillColorInput = $(map.container).find('.popup-content input[name="fillColor"]');
+                var borderColorInputPicker = $(map.container).find('.popup-content input[name="strokeColorPicker"]');
+                var fillColorInputPicker = $(map.container).find('.popup-content input[name="fillColorPicker"]');
+
                 borderColorInput.val(map.activeLocation.BorderColor);
-                borderColorInput.simpleColorPicker();
+                borderColorInputPicker.val(map.activeLocation.BorderColor);
+                borderColorInputPicker.height(borderColorInput.outerHeight());
+                borderColorInputPicker.width(borderColorInput.outerHeight());
+
                 fillColorInput.val(map.activeLocation.FillColor);
-                fillColorInput.simpleColorPicker();
+                fillColorInputPicker.val(map.activeLocation.FillColor);
+                fillColorInputPicker.height(fillColorInput.outerHeight());
+                fillColorInputPicker.width(fillColorInput.outerHeight());
+
+                if (isIE()) {
+                    borderColorInput.simpleColorPicker();
+                    fillColorInput.simpleColorPicker();
+                }
+                else {
+                    fillColorInputPicker.change(function () {
+                        fillColorInput.val($(this).val());
+                    });
+                    fillColorInput.change(function () {
+                        fillColorInputPicker.val($(this).val());
+                    });
+
+                    borderColorInputPicker.change(function () {
+                        borderColorInput.val($(this).val());
+                    });
+                    borderColorInput.change(function () {
+                        borderColorInputPicker.val($(this).val());
+                    });
+                }
 
                 if (settings.mapSettings.RichtextEditor) {
                     intTinyMce();
@@ -658,6 +686,19 @@ $.fn.GoogleMapEditor = function (options) {
 
             }
         });
+    }
+
+    function isIE() {
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     function intTinyMce() {

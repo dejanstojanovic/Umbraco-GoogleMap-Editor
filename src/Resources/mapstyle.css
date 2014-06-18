@@ -1,5 +1,4 @@
-.google-map
-{
+.google-map {
     width: 800px;
     height: 500px;
     background-color: #DBDBDB;
@@ -8,9 +7,20 @@
     background-repeat: no-repeat;
 }
 
+.popup-content input[type=color] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /*border: 1px solid #ccc;*/
+    border:none;
+    border-radius: 3px;
+    display: inline-block;
+    height: 25px;
+    padding: 0px !important;
+    vertical-align: middle;
+    width: 25px;
+}
 
-.popup-content .btn-popup-delete
-{
+.popup-content .btn-popup-delete {
     border: 1px solid #df0909;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -33,8 +43,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f62b2b, endColorstr=#d20202);
 }
 
-    .popup-content .btn-popup-delete:hover
-    {
+    .popup-content .btn-popup-delete:hover {
         border: 1px solid #b30808;
         background-color: #e40a0a;
         background-image: -webkit-gradient(linear, left top, left bottom, from(#e40a0a), to(#9f0202));
@@ -46,37 +55,31 @@
         filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#e40a0a, endColorstr=#9f0202);
     }
 
-.popup-content input[type=text], .popup-content input[type=number], .popup-content select, .popup-content textarea
-{
+.popup-content input[type=text], .popup-content input[type=number], .popup-content select, .popup-content textarea {
     border: 1px solid #CCCCCC;
     border-radius: 3px;
     padding: 3px;
 }
 
-.popup-content textarea
-{
+.popup-content textarea {
     height: 100px;
-    width:530px;
+    width: 530px;
 }
 
-    .popup-content textarea.richtext-fix
-    {
+    .popup-content textarea.richtext-fix {
         margin-bottom: 35px;
     }
 
-.popup-content input[type=text], .popup-content input[type=number], .popup-content select
-{
+.popup-content input[type=text], .popup-content input[type=number], .popup-content select {
     width: 150px;
 }
 
-.popup-content table tr
-{
+.popup-content table tr {
     padding-top: 6px;
     padding-bottom: 6px;
 }
 
-.error-icon
-{
+.error-icon {
     margin-left: 4px;
     vertical-align: middle;
 }

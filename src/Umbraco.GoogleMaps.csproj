@@ -142,6 +142,7 @@
     <Content Include="References\umbraco.dll" />
     <Content Include="References\umbraco.editorControls.dll" />
     <Content Include="References\umbraco.providers.dll" />
+    <EmbeddedResource Include="Resources\mapstyle-ie.css" />
     <EmbeddedResource Include="Resources\Error.png" />
     <EmbeddedResource Include="Resources\jquery.googlemapview.js" />
   </ItemGroup>

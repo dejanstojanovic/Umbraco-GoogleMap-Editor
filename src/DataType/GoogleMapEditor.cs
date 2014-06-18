@@ -137,6 +137,15 @@ namespace Umbraco.GoogleMaps.DataType
             Page.RegisterStyleSheetBlock("ColorPicker", Common.GetResourceText("jquery.simple-color-picker.css"));
             Page.RegisterStyleSheetBlock("MapContainer", Common.GetResourceText("mapstyle.css"));
 
+            //Add IE specific stylesheet
+            if (HttpContext.Current.Request.Browser.Type.ToLower().Contains("ie") 
+                || HttpContext.Current.Request.Browser.Type.ToLower().Contains("trident")
+                || HttpContext.Current.Request.Browser.Type.ToLower().Contains("internetexplorer")
+                )
+            {
+                Page.RegisterStyleSheetBlock("MapContainerIE", Common.GetResourceText("mapstyle-ie.css"));
+            }
+
             ctlValue = new HiddenField();
 
             HtmlGenericControl mainDiv = new HtmlGenericControl("div");
