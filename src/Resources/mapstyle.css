@@ -83,3 +83,25 @@
     margin-left: 4px;
     vertical-align: middle;
 }
+
+
+.fit-bound
+{
+    margin-left: -4px;
+    margin-top: 5px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    width:26px;
+    height:26px;
+    z-index:999;
+    background-image: url(/Umbraco/Api/Resource/GetEmbededPng?filename=fit-bounds.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+}
+.fit-bound:hover
+{
+    background-color:#EBEBEB;
+}

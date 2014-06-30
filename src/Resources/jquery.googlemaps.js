@@ -89,6 +89,27 @@ $.fn.GoogleMapEditor = function (options) {
         }
     }
 
+    function addFitBoundButton(map) {
+        var inputId = "c" + map.id;
+        $(map.container).parent().prepend("<input id=\"" + inputId + "\" class=\"fit-bound\" type=\"button\" title=\"Fit bounds\" />");
+        var input = document.getElementById(inputId);
+        if (input != null) {
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+            $(input).click(function () {
+                if (map.locations != null && map.locations.length > 0) {
+                    var mapLocationBounds = new google.maps.LatLngBounds();
+                    for (i = 0; i < map.locations.length; i++) {
+                        for (j = 0; j < map.locations[i].Coordinates.length; j++) {
+                            mapLocationBounds.extend(new google.maps.LatLng(map.locations[i].Coordinates[j].Latitude, map.locations[i].Coordinates[j].Longitude));
+                        }
+                    }
+                    map.fitBounds(mapLocationBounds);
+                    saveToJson(map);
+                }
+            });
+        }
+    }
+
 
     function arePopupTemplatesLoaded() {
         if (
@@ -176,6 +197,9 @@ $.fn.GoogleMapEditor = function (options) {
         map.id = createUUID();
 
         google.maps.event.addListenerOnce(map, 'idle', function () {
+
+            addFitBoundButton(map);
+
             if (settings.mapSettings.SearchBox) {
                 addSearchBox(map);
             }
