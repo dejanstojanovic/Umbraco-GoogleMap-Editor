@@ -180,31 +180,34 @@ namespace Umbraco.GoogleMaps.DataType
         {
             base.OnLoad(e);
 
-            if (this._data.Value != null && !string.IsNullOrEmpty(this._data.Value.ToString()))
+            if (!this.Page.IsPostBack)
             {
-                MapState mapVal = MapState.Deserialize(this._data.Value.ToString());
-
-                if (mapVal != null)
+                if (this._data.Value != null && !string.IsNullOrEmpty(this._data.Value.ToString()))
                 {
-                    mapVal.SingleLocation = value.SingleLocation;
-                    mapVal.Language = value.Language;
-                    mapVal.Width = value.Width;
-                    mapVal.Height = value.Height;
-                    mapVal.DrawingTools = value.DrawingTools;
-                    mapVal.SearchBox = value.SearchBox;
-                    mapVal.RichtextEditor = value.RichtextEditor;
-                    mapVal.ZoomControl = value.ZoomControl;
-                    mapVal.PanControl = value.PanControl;
-                    mapVal.StreetViewControl = value.StreetViewControl;
-                    mapVal.ScaleControl = value.ScaleControl;
+                    MapState mapVal = MapState.Deserialize(this._data.Value.ToString());
 
-                    this.ctlValue.Value = mapVal.ToJSON();
+                    if (mapVal != null)
+                    {
+                        mapVal.SingleLocation = value.SingleLocation;
+                        mapVal.Language = value.Language;
+                        mapVal.Width = value.Width;
+                        mapVal.Height = value.Height;
+                        mapVal.DrawingTools = value.DrawingTools;
+                        mapVal.SearchBox = value.SearchBox;
+                        mapVal.RichtextEditor = value.RichtextEditor;
+                        mapVal.ZoomControl = value.ZoomControl;
+                        mapVal.PanControl = value.PanControl;
+                        mapVal.StreetViewControl = value.StreetViewControl;
+                        mapVal.ScaleControl = value.ScaleControl;
+
+                        this.ctlValue.Value = mapVal.ToJSON();
+                    }
+
                 }
-
-            }
-            else
-            {
-                this.ctlValue.Value = value.ToJSON();
+                else
+                {
+                    this.ctlValue.Value = value.ToJSON();
+                }
             }
 
         }
