@@ -343,9 +343,11 @@ namespace Umbraco.GoogleMaps.DataType
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!Page.IsPostBack)
-            {
-                
+
+            /* REMOVE POSTBACK CHANGE TO LOAD DEFAULT VALUES WHEN NEW DATATYPE CREATED */
+
+            //if (!Page.IsPostBack)
+            //{
 
                 if (Configuration != null)
                 {
@@ -410,8 +412,7 @@ namespace Umbraco.GoogleMaps.DataType
                     }
                 }
 
-
-            }
+            //}
 
 
         }
