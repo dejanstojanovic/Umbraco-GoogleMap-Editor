@@ -183,7 +183,7 @@ $.fn.GoogleMapEditor = function (options) {
         loadPopupTemplates();
 
         map = new google.maps.Map(container, {
-            center: new google.maps.LatLng(settings.Center.Latitude, settings.Center.Longitude),
+            center: new google.maps.LatLng(settings.mapSettings.Center.Latitude, settings.mapSettings.Center.Longitude),
             zoom: settings.mapSettings.Zoom,
             zoomControl: settings.mapSettings.ZoomControl,
             panControl: settings.mapSettings.PanControl,
